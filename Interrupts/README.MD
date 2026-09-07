@@ -8,8 +8,8 @@ NMI Pending logic using Logisim Evolution
 
 Using a TTL 74LS74 Chip
 
-![TTL Version of NMI latch](NMI_TTL_Experminet.png)
+![TTL Version of NMI latch](NMI_TTL_Experiment.png)
 
 Implementing EI / DI logic 
 
-![INT with EI and DI Logic](Lathced_INT.png)
+![INT with EI and DI Logic](Latched_INT.png)
