@@ -2,12 +2,20 @@
 
 One area that has been bugging me in this design has been the lack of interrupts. I was so absorbed in trying to structure the control logic that I missed a crucial mechanism - interrupt logic is normally checked at the end of the current instruction.
 
-Keeping this in mind, I qucikly realized in my design that I simply needed to have an additonal "T" State to do a check for an interrupt, and if present start an "I" state counter to clock through the logic needed to do what an intrupt handler needs in place before the first instruction of the Interupt subroutine is executed.
+Keeping this in mind, I quickly realized in my design that I simply needed to have an additonal "T" State to do a check for an interrupt, and if present start an "INT_State_0" state counter to clock through the logic needed to do what an intrupt handler needs in place before the first instruction of the Interupt subroutine is executed.
 
-I want to implement something similar to what most CPU designs have, an NMI (Non-maskable interrupt), a maskable INT (controlled via the EI and DI instructions). And even a vectored interupt using an offset register. Once the basic logic was in pllace, I could add to it later.
+In terms of the types of Interrupts, I want to implement something similar to what most CPU designs have:
 
-The first thing to do was work out how to latch the signals for the different types of interupts. Logisim Evolution seamed like the tool to use.
+- An NMI (Non-maskable interrupt);
+- A maskable INT (controlled via the EI and DI instructions).
+- A vectored interupt using an offset register.
+- A "Fast Interupt", just save the PC and Flags, leave the Registers to the code
 
+Once the basic logic is in place, each can be added to the design later provided the initial design is done well.
+
+## Getting Started
+
+The first thing to do was work out how to latch the signals for the different types of interupts. Logisim Evolution seamed like the tool to use. Below is some experiments in simple latching to demonstrate this.
 
 ## NMI Pending logic using Logisim Evolution
 
