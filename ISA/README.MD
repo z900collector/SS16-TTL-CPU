@@ -1,12 +1,12 @@
 # SS-16 Instruction Set Architecture #
 
-## Overview ##
+# Overview
 
 Currently I am building a 16 bit version of the TTL based CPU, so the instruction word is fixed at 16 bits. This has been influenced by various RISC CPU designs. Eventually I will move to a 32-Bit design once I have actually built a working system.
 
 The design of the ISA has undergone many evolutions as I process through the final details and create Logisim Circuits testing the design.
 
-## Instruction Format ##
+## Instruction Format
 
 The 16-Bit ISA uses the top 2 bits (15,14) to define the instruction "type" for the four parallel instruction registers. This leaves 6 bits for the Instruction followed by the lower 8 bits being used for Source and Destination register definitions (3 bits each for 8 Registers) or in the case of I/O operations using IN/OUT, the 8 bits identifies the port.
 
@@ -32,7 +32,7 @@ Note: If there are 16 registers then the format for Rs & Rd is SSSS DDDD
 [Current ISA spreadsheet](/ISA/ISA-2026-04-14.xls) 
 
 
-## Type Bits ##
+### Type Bits 
 
 The "T" bits are designated as follows:
 ```
@@ -45,20 +45,19 @@ STATUS: Very Incomplete! As I build each functional unit I am adding and updatin
 
 Refer to InsetSet.h for a full list of currently defined instructions (but not necessarily completed instruction classes).
 
-## Registers ##
+## Registers
 
 The SS-16's current design has 8 registers called R0 to R7. This allow for a 3-bit addressing scheme within an instruction.
-Source and Destination registers that are 3 bits each (giving 8 registers) R0-R7 but can be expanded to 16 registers each very easily.
+Source and Destination registers that are 3 bits each (giving 8 registers) R0-R7 but can be expanded to 16 registers very easily.
 
-R0-R3 are specialized registers with extended ALU capability (INC/DEC/SHL/ROL etc).
+- R0-R3 are specialized registers with extended ALU capability (INC/DEC/SHL/ROL etc).
+- R7 is slated as the results register for ALU maths operations.
+- R6 can be loaded with the Program Counter (PC) value using the LDPC instruction.
+- R5 can be loaded with the Stack Point (SP) value using the LDSPinstruction.
 
-R7 is slated as the results register for ALU maths operations.
+## Instruction mnemonic bit encoding
 
-R6 can be loaded with the Program Counter (PC) value using the LDPC instruction.
-
-R5 can be loaded with the Stack Point (SP) value using the LDSPinstruction.
-
-## Instruction mnemonic bit encoding ##
+Bits 13-8 are allocated for instructions.
 
 Below is the 8 bit value representing the upper 8 bits of an instruction:
 
@@ -70,7 +69,6 @@ FEDC BA98
 11-- ---- Type 3 Instruction - Jumps/Calls (+halt) c0-ff
 --II IIII Instruction
 ```
-Bits 13-8 are allocated for instructions.
 
 The "Type" bits also form the instruction but are used to break the ISA into four groups that is directly tied to decoding logic.
 
@@ -82,12 +80,12 @@ Using four separate Instuction decoding queues should allow different methods of
 
 
 
-** This is still in design phase so this can/will change over time. **
+**This is still in design phase so this can/will change over time.**
 
 
-### Type 0 Instructions ###
+### Type 0 Instructions
 
-The type 0 instructions have a range of 00-4f
+The type 0 instructions have a range of 0x00-0x4F
 ```
 	NOP                ; No Operation Instruction
 	INT I              ; Jump to Interupt Routine I (0x00 to 0xFF)
@@ -104,9 +102,9 @@ The type 0 instructions have a range of 00-4f
 	MUL Rs1,Rs2        ; Multiple Rs1 with Rs2
 ```
 
-### Type 1 Instructions ###
+### Type 1 Instructions
 
-Type 1 Instruction 50-7f
+Type 1 Instructions have a range of 0x50-0x7F
 
 ```
 	LD  Rd,Rs          ; Load Rd with the value from Rs
@@ -116,7 +114,7 @@ Type 1 Instruction 50-7f
 	LDM Rd,(M)         ; Load Rd with the value stored in imemeory location M
 	LDFL Rd            ; Load Flag register into Rd
 	ST  RD,#1234       ; store Register into memory location 0x1234 (16 bits)
-   XFER Rd, Rs        ; Load the Value from Rs into the "B" latch of Rd (Rd is R0-R3 only)
+	XFER Rd, Rs        ; Load the Value from Rs into the "B" latch of Rd (Rd is R0-R3 only)
 
 	MOV (M), Rd        ; Load Rd with value from Code Space
 	PUSH Rn            ; Dec SP and then PUSH the Register Rn onto the stack
@@ -128,7 +126,7 @@ Type 1 Instruction 50-7f
 
 ### Type 2 Instructions ###
 
-Type 2 Instruction - Register operations 80-bf
+Type 2 Instructions are for Register operations and have a range of 0x80-0xBF
 
 Notes: SP always points to the last value written. I.e PUSH or return address.
 ```
@@ -149,7 +147,7 @@ Notes: SP always points to the last value written. I.e PUSH or return address.
 
 ### Type 3 Instruction ###
 
-Type 3 Instruction - Jumps/Calls (+halt) c0-ff
+Type 3 Instructions are primarily for Jumps/Calls/Returns (+ HALT) 0xC0-0xFF
 
 ```
 	JMP M             ; Jump to location M in ROM
@@ -163,4 +161,8 @@ Type 3 Instruction - Jumps/Calls (+halt) c0-ff
 	HALT              ; Turn off system clock (Basically stop with PC set to location of HALT
 	LDPC              ; Load Stack Pointer to Rd
 	STPC              ; Store Rs to the Stack Pointer
+	RETI              ; Return from Interrupt
 ```
+
+**Updated 2026-09-08**
+
