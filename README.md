@@ -67,7 +67,7 @@ There are some slightly more advanced designs, that have one or more of these fe
 - Modular approach rather than central control.
 - Modified Harvard Architecture - separate code, Stack and User RAM.
 - Well defined register usage similar to RISC-V and MIPs but not a direct implementation of them.
-- Simplified
+- Implement Interrupts.
 
 Most designs have similar goals to this so it fits within the Home Brew TTL Computer design ideals.
 
