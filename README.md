@@ -37,13 +37,13 @@ However, there are huge bottlenecks in these designs, **they do work and work we
 
 In basic point form, the issues that are common to most TTL CPU designs are:
 
-* EPROMs have delay times of upwards of 100-150ns or worse thus limiting clock timing.
-* Single Bus designs cause a bottleneck, particularly with ALU operations.
-* ALU operations often rely on [74181](https://www.righto.com/2017/03/inside-vintage-74181-alu-chip-how-it.html) which is very much a legacy chip.
-* Most have a single Instruction fetch/decode and execute phase with no overlap.
-* Single control unit with complex control line distribution. In most cases the need for more control signals means adding more EPROMS to breakout the individual signals.
-* Registers as basic latches without any additional logic capability.
-* RAM, Code and Stack in one address space.
+- EPROMs have delay times of upwards of 100-150ns or worse thus limiting clock timing.
+- Single Bus designs cause a bottleneck, particularly with ALU operations.
+- ALU operations often rely on [74181](https://www.righto.com/2017/03/inside-vintage-74181-alu-chip-how-it.html) which is very much a legacy chip.
+- Most have a single Instruction fetch/decode and execute phase with no overlap.
+- Single control unit with complex control line distribution. In most cases the need for more control signals means adding more EPROMS to breakout the individual signals.
+- Registers as basic latches without any additional logic capability.
+- RAM, Code and Stack in one address space.
 
 Some concessions:
 
@@ -51,22 +51,23 @@ Some concessions:
 
 There are some slightly more advanced designs, that have one or more of these features:
 
-* An ALU bus directly connected to some of the system registers.
-* Registers implemented using counter chips allowing Increment / Decrement operations.
-* ALU implemented as logic gates with mux chips removing the reliance on vintage End of life (EOL) chips like the 74LS181
-* Dual stage Pipeline with simple logic decoding.
-* Dual bus support - limited but still usable.
-* MMU like features to address memory beyond 16-bit Address Bus range.
+- An ALU bus directly connected to some of the system registers.
+- Registers implemented using counter chips allowing Increment / Decrement operations.
+- ALU implemented as logic gates with mux chips removing the reliance on vintage End of life (EOL) chips like the 74LS181
+- Dual stage Pipeline with simple logic decoding.
+- Dual bus support - limited but still usable.
+- MMU like features to address memory beyond 16-bit Address Bus range.
 
 ## Philosophical Goals
 
-* Use 74HC/HCT/ALS series TTL chips where possible in the core CPU design and Implementation (avoid 74LSxxx). 
-* Aim for a clean and elegant design where possible.
-* As RISC like as possible.
-* Clean/Uniform instruction set design.
-* Modular approach rather than central control.
-* Modified Harvard Architecture - separate code, Stack and User RAM.
-* Well defined register usage similar to RISC-V and MIPs but not a direct implementation of them.
+- Use 74 series TTL chips where possible in the core CPU design and Implementation (avoid 74LSxxx). 
+- Aim for a clean and elegant circuit design where possible.
+- As RISC like as possible.
+- Clean/Uniform instruction set design.
+- Modular approach rather than central control.
+- Modified Harvard Architecture - separate code, Stack and User RAM.
+- Well defined register usage similar to RISC-V and MIPs but not a direct implementation of them.
+- Simplified
 
 Most designs have similar goals to this so it fits within the Home Brew TTL Computer design ideals.
 
@@ -86,13 +87,13 @@ For something different, the Stack space will also have it's own RAM space separ
 
 The following topics are where performance can be improved allowing multiple tasks to be performed within the same clock cycles and reducing bottlenecks in the overall design:
 
-## R-BUS
-Rather than a single bus for register access, I am aiming to provide two data buses, the conventional D-Bus and a separate register bus called "R-Bus" for register-to-register moves. This also includes moving data to and from the Stack Pointer Register and Program Counter Register.
+## RBUS
+Rather than a single bus for register access, I am aiming to provide two data buses, the conventional Data Bus (referenced as DBUS in the design) and a separate register bus called "RBUS" for register-to-register moves. This also includes moving data to and from the Stack Pointer Register and Program Counter Register.
 
 
-For arithmetic ALU operations like ADD, SUB, DIV and MUL, I can dedicate a register as the ALU results register (at this stage it's R0) and use the D-Bus and R-Bus as inputs to the Arithmetic ALU like other designs.
+For arithmetic ALU operations like ADD, SUB, DIV and MUL, I can dedicate a register as the ALU results register (at this stage it's R0) and use the DBUS and RBUS as inputs to the Arithmetic ALU like other designs.
 
-Current design Idea as of September 2025. I still need to drop this onto a bread board and complete the register control logic.
+Current (draft) design as of September 2025. I still need to drop this onto a bread board and complete the register control logic.
 ![SS16-TTL-CPU](REG-Signals-2025-09-09.jpg?raw=true)
 
 ## Instruction Groups
