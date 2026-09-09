@@ -208,9 +208,9 @@ You can find the "Soon to be Completed" Assembler here: https://github.com/z900c
 
 # Schematics 
 
-Stillchematics are still being finalized as I build modules. They will be released in KiCad and PDF formats soon.
+I am still drawing up the schematics as I build modules. As I've taken a module approach to buidling things, I have tried to implement the circuits as KiCAD Heirarchial Sheets.I will release these in KiCad and PDF formats soon.
 
-So far I have the PC, SP drawn up and am working on the registers and User RAM. Everything else is sketches on paper (lots!).
+So far I have the PC and SP drawn up and am working on the registers and User RAM. Everything else is sketches on paper (lots!).
 
 # Updates 
 
@@ -238,5 +238,5 @@ sid DOT young AT gmail DOT com
 
 Use SS-16 at the start of the Subject line (put them in square brackets) as I get a lot of emails every day and I can filter these with priority.
 
-*Updated 2026-09-09
+*Updated 2026-09-09*
 
