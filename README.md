@@ -1,7 +1,6 @@
 # SS16-TTL-CPU
 An attempt at building a superscalar TTL CPU using 74HC/HCT Logic - 16 Bit version
 
-Updated 2026-04-14
 
 # Introduction
 
@@ -200,36 +199,38 @@ See below for a description of the key points:
 Previous Version of the ISA is located here, https://github.com/z900collector/CPU32-Assembler/blob/main/isa.md this will be updated to point into the SS-16 project.
 
 
-# Software #
+# Software 
 
 As I narrowed down on the width of the CPU, I decided an assembler project would highlight any issues as well as clarify the hardware needed to support the ISA. So I developed an Assembler. 
 Having written 8080/8085/z80 and 68020 assembler code back in the 70's and 80's as an Embedded Systems Engineer in my younger days, I decided I would borrow ideas from these CPU's as well as the MIPS and RISC-V designs.
 
 You can find the "Soon to be Completed" Assembler here: https://github.com/z900collector/CPU32-Assembler
 
-# Schematics #
+# Schematics 
 
-Still being finalized as I build modules. Will be released in KiCad and PDF formats soon.
+Stillchematics are still being finalized as I build modules. They will be released in KiCad and PDF formats soon.
 
-So far I have the PC drawn up and am working on the registers and User RAM. Everything else is sketches on paper (lots!).
+So far I have the PC, SP drawn up and am working on the registers and User RAM. Everything else is sketches on paper (lots!).
 
-# Updates #
+# Updates 
 
-## Update - 2026-02-23 ##
+## Update - 2026-02-23
 
 Currently designing the ALU and Pipeline Logic, ordered more IC's to breadboard and will start breadboarding the IR logic and first pipeline.
 
-## Update - 2026-03-13 ##
+## Update - 2026-03-13
 
 ISA looking fairly stable, circuit design underway in KiCAD and breadboarding commenced.
 
 More to come!
 
-## Update - 2026-04-14 ##
+## Update - 2026-04-14
 
 * Uploaded XLS file and moved ISA readme into a new ISA folder. 
 * Updated readme to reflect movement of instructions, some additions and some deleteions.
 
+
+## Contacting Me
 
 If you need to cotact me:
 
@@ -237,4 +238,5 @@ sid DOT young AT gmail DOT com
 
 Use SS-16 at the start of the Subject line (put them in square brackets) as I get a lot of emails every day and I can filter these with priority.
 
+*Updated 2026-09-09*
 
