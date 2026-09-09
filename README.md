@@ -238,5 +238,5 @@ sid DOT young AT gmail DOT com
 
 Use SS-16 at the start of the Subject line (put them in square brackets) as I get a lot of emails every day and I can filter these with priority.
 
-*Updated 2026-09-09*
+*Updated 2026-09-09
 
