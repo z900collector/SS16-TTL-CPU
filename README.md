@@ -86,6 +86,10 @@ For something different, the Stack space will also have it's own RAM space separ
 
 The following topics are where performance can be improved allowing multiple tasks to be performed within the same clock cycles and reducing bottlenecks in the overall design:
 
+## RAM
+
+Fast 8-bit Static Ram is available with typical access times of 10ns. For example the MCM6926A from NXP (Motorola), offers 128K x 8 organization with access times of 8, 10, 12, or 15 ns.
+
 ## RBUS
 Rather than a single bus for register access, I am aiming to provide two data buses, the conventional Data Bus (referenced as DBUS in the design) and a separate register bus called "RBUS" for register-to-register moves. This also includes moving data to and from the Stack Pointer Register and Program Counter Register.
 
@@ -94,26 +98,6 @@ For arithmetic ALU operations like ADD, SUB, DIV and MUL, I can dedicate a regis
 
 Current (draft) design as of September 2025. I still need to drop this onto a bread board and complete the register control logic.
 ![SS16-TTL-CPU](REG-Signals-2025-09-09.jpg?raw=true)
-
-## Instruction Groups
-
-Using an idea from the MIPS CPU, I have aimed for a fixed size instruction set that uses 2 bits as a "I-Type" field and have four separate Instruction registers (from a hardware perspective, think [74HC139](https://www.ti.com/lit/gpn/SN74HCT139) and 74HC574 Latches). This gives each of the four groups of instructions 6 bits or 64 different instructions per group.
-
-By grouping related Instructions together, the control logic can then be implemented in logic gates for many instructions without needing EPROM style decoding. The decoding can also be passed onto the functional unit that the instructions apply to (where possible).
-This allows both a parallel pipeline design where instruction fetching continues on each 2nd cycle (unless paused) and segregates the control logic needed to handle just the signals for the instructions to be handled by that pipeline.
-
-The ISA details are still in draft stage, once the Assembler project is completed. But basically 2 bits for the I-Type and the remaining 6 bits for the range of instructions in each group gives 8 bits for Instructions and add in 6 bits for the register selection leaves 2 bits in the first 16-bit word. Immediate values could be an additional fetch if the instruction requires an immediate value.
-
-When the design is expanded to 32 bits, the Immediate value can be the lower 16 bits.
-
-The ISA documentation is [here](/ISA/README.MD)
-
-So far the Identified Groups are:
-
-* Miscellaneous Instructions (like NOP)
-* Register Operations
-* ALU Operations
-* Call, Jump operations.
 
 ## Advanced Registers
 
@@ -197,6 +181,26 @@ See below for a description of the key points:
 
 
 Previous Version of the ISA is located here, https://github.com/z900collector/CPU32-Assembler/blob/main/isa.md this will be updated to point into the SS-16 project.
+
+## Instruction Groups
+
+Using an idea from the MIPS CPU, I have aimed for a fixed size instruction set that uses 2 bits as a "I-Type" field and have four separate Instruction registers (from a hardware perspective, think [74HC139](https://www.ti.com/lit/gpn/SN74HCT139) and 74HC574 Latches). This gives each of the four groups of instructions 6 bits or 64 different instructions per group.
+
+By grouping related Instructions together, the control logic can then be implemented in logic gates for many instructions without needing EPROM style decoding. The decoding can also be passed onto the functional unit that the instructions apply to (where possible).
+This allows both a parallel pipeline design where instruction fetching continues on each 2nd cycle (unless paused) and segregates the control logic needed to handle just the signals for the instructions to be handled by that pipeline.
+
+The ISA details are still in draft stage, once the Assembler project is completed. But basically 2 bits for the I-Type and the remaining 6 bits for the range of instructions in each group gives 8 bits for Instructions and add in 6 bits for the register selection leaves 2 bits in the first 16-bit word. Immediate values could be an additional fetch if the instruction requires an immediate value.
+
+When the design is expanded to 32 bits, the Immediate value can be the lower 16 bits.
+
+The ISA documentation is [here](/ISA/README.MD)
+
+So far the Identified Groups are:
+
+* Miscellaneous Instructions (like NOP)
+* Register Operations
+* ALU Operations
+* Call, Jump operations.
 
 
 # Software 
