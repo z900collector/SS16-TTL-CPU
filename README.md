@@ -1,6 +1,6 @@
 # SS16-TTL-CPU
-An attempt at building a superscalar TTL CPU using 74HC/HCT Logic - 16 Bit version
 
+An attempt at building a RISC inspired 16 bit superscalar TTL CPU using 74 series TTL Logic
 
 # Introduction
 
@@ -25,7 +25,7 @@ Most simple TTL CPU designs have the following:
 
 However, there are huge bottlenecks in these designs, **they do work and work well** for what they are, but I wanted something:
 
-* Faster >10Mhz <50Mhz,
+* Faster >10Mhz <50Mhz
 * More sophisticated design (take as many features from RISC based designs) and
 * More modular in it's design, think "Functional Units".
 * Pipelined and parallel operations where possible.
@@ -59,7 +59,7 @@ There are some slightly more advanced designs, that have one or more of these fe
 
 ## Philosophical Goals
 
-- Use 74 series TTL chips where possible in the core CPU design and Implementation (avoid 74LSxxx). 
+- Maximise the use 74 series TTL chips where possible in the core CPU design and implementation. 
 - Aim for a clean and elegant circuit design where possible.
 - As RISC like as possible.
 - Clean/Uniform instruction set design.
