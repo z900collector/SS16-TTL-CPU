@@ -171,7 +171,7 @@ Implemented on reset, using a special sequencer to perform SP->RD->WR->INC_SP-> 
 
 # ISA #
 
-The ISA has come under some sustained revisions to align with the Control Logic Decoding I am looking at implementing. Below is the new loaction of the ISA docuemtnation including a spreadsheet.
+The Instruction Set Architecture (ISA) is evolving every few weeks with each revision aligning the Control Logic Decoding to the layout of the ISA. Below is the new location of the ISA documentation including a spreadsheet.
 
 See: [Instruction set Architecture](/ISA/README.MD)
 
@@ -212,7 +212,7 @@ You can find the "Soon to be Completed" Assembler here: https://github.com/z900c
 
 # Schematics 
 
-I am still drawing up the schematics as I build modules. As I've taken a module approach to buidling things, I have tried to implement the circuits as KiCAD Heirarchial Sheets.I will release these in KiCad and PDF formats soon.
+I am still drawing up the schematics as I build modules. As I've taken a module approach to buidling things, I have tried to implement the circuits as KiCAD Heirarchial Sheets and I will release these in KiCad and PDF formats soon.
 
 So far I have the PC and SP drawn up and am working on the registers and User RAM. Everything else is sketches on paper (lots!).
 
@@ -233,6 +233,10 @@ More to come!
 * Uploaded XLS file and moved ISA readme into a new ISA folder. 
 * Updated readme to reflect movement of instructions, some additions and some deleteions.
 
+## Update - 2026-10-02
+
+* KiCAD sheet design restarted, new layout style being implemented.
+* Logisim design - Worked on interrupt logic and possible implementation.
 
 ## Contacting Me
 
@@ -242,5 +246,5 @@ sid DOT young AT gmail DOT com
 
 Use SS-16 at the start of the Subject line (put them in square brackets) as I get a lot of emails every day and I can filter these with priority.
 
-*Updated 2026-09-09*
+*Updated 2026-10-02*
 
