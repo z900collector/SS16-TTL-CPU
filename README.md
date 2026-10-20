@@ -177,7 +177,7 @@ See: [Instruction set Architecture](/ISA/README.MD)
 
 See below for a description of the key points:
 
-![SS16-TTL-CPU](2026-03-13-ISA-Table.png?raw=true)
+![SS16-TTL-CPU](2026-10-20-ISA-144645.png?raw=true)
 
 
 Previous Version of the ISA is located here, https://github.com/z900collector/CPU32-Assembler/blob/main/isa.md this will be updated to point into the SS-16 project.
