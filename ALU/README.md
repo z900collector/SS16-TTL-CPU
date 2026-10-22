@@ -1,8 +1,8 @@
-ALU Design
+# ALU Design #
 
 Draft Notice - This is some thoughts on a 16-Bit ALU for the SS16 TTL CPU
 
-I have been studying the Multiplexor ALU design by Dieter Muller from around 2016. The URL is here for those inclined to do more research:
+I've been looking at how a typical ALU works but without using the 74LS181 or similar style chip. One of thesites I have been studying is the Multiplexor ALU design by Dieter Muller from around 2016. The URL is here for those inclined to do more research:
 
 http://www.6502.org/users/dieter/
 
