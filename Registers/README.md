@@ -1,20 +1,20 @@
 # Registers
 
 
-## Register Overview
+## Overview ##
 
 Influenced by a range of CPU designs, I have settled on the following specifications for the Registers.
 
-The design will have eight (8) registers, identified as R0 to R7.
+The design will have eight (8) registers, identified as R0 to R7 all are 16 bits wide.
 
-Registers R0-R3 will include the ability to perform the following instructions that would typically be handled by an ALU:
+Registers R0-R3 will include the ability to perform some simple ALU functions separate to the main ALU:
 
 * INC / DEC
 * BSET / BCLR / BTST
 * Shifts / Rotates
 * Zero / Invert / Bitwise OR / AND / XOR operations
 
-Registers 4-7 will basically be latches but also connected to an additional data source via a direct bus. The additonal connections will be one of the following:
+Registers 4-7 will basically be latches but are connected to both the DBUS and RBUS. These registers can also hold the current value/result of the following:
 
 - Primary ALU output result.
 - Program Counter Latches.
@@ -23,12 +23,13 @@ Registers 4-7 will basically be latches but also connected to an additional data
 
 Having eight registers means having 3 bits for a source and 3 bits for a destination register in the ISA format. Provision has been made to go to 4 bits allowing 16 registers in a more advanced design.
 
-### Registers R0-R3 
+### Registers R0-R3 ###
 
 Registers R0 to R3 are known as "Advanced Registers" as they do more than just hold a value. In order to implement basic bitwise operations in the first four registers, a second operand in required, this is provided by having an additional latch.
 
-This latch is identified as the "B" Latch and can be set using the "XFER" and "TRAN" instruction.
-See the ISA for more details, but basically it's format is:
+This latch is identified as the "B" Latch and can be set using the "XFER" and "TRAN" instructions. At this stage "TRAN" is not in the ISA but will be added shortly.
+
+See the ISA for more details, but basically the format for "XFER" is:
 
  **XFER Rs,Rd** - where "Rs" is the "Source" register and "Rd" is the "Destination" register.
 
@@ -36,7 +37,7 @@ This instruction allows the "A" Latch value of any other register to be loaded i
 
  **TRAN R** - This is a new instruction I thought up and is yet to be documented and tested. 
 
-The TRAN instruction tansfers the value in the "A" Latch into the "B" Latch. I used the simulation tool "Logisim Evolution" to verify this capability and the circuit fully supports this so I just need to add it into the ISA and work up the control signals.
+The TRAN instruction tansfers the value in the "A" Latch into the "B" Latch within the same register. I used the simulation tool "Logisim Evolution" to verify this capability and the circuit fully supports this so I just need to add it into the ISA and work up the control signals.
 
 **Note: If "Rd" is specified as R4 to R7 then no operation is performed as these Registers do not have a "B" Latch.**
 
