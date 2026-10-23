@@ -1,6 +1,6 @@
 # Overview #
 
-**DRAFT** -  
+**DRAFT** - 2026-10-23
 
 This project uses a 16-Bit stack but unlike other projects, the stack is not part of normal user RAM, instead it is implemented as a separate "Functional Unit".
 
@@ -12,7 +12,7 @@ The transfer of register contents to and from the SP takes place over the RBUS.
 
 ### Reset ###
 
-When a RESET occurs, the SP initializes back to 0xFFFF. The RSP instruction can also be used to reset the SP back to 0xFFFF.
+When a RESET occurs, the SP initializes back to 0xFFFF. The RSP instruction can also be used to reset the SP back to 0xFFFF. 
 
 ### PUSH ###
 
@@ -20,14 +20,16 @@ A PUSH operation requires the Register value to be presented on the RBUS, a sign
 
 #### States ####
 
-* The SP will increment the SP counter
-* The SP RAM CS will be asserted as will the latch OE pin and the RAM WR pin.
-* Then the OE, CS and WR signals are de-asserted.
-* The current value of the SP counter is also latched so it can be read back if required.
+* T0 - The SP will increment the SP counter.
+* T1 - Assert RAM_CS.
+* T1 - Assert RBUS_DIR.
+* T1 - Assert RBUS_OE.
+* T2 - Assert RAM_WR.
+* T3 - De-assert RAM_WR, RAM_CS, RBUS_OE.
 
 ### POP ###
 
-THe POP signal will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
+The POP signal will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
 
 #### States ####
 
@@ -52,11 +54,10 @@ THe POP signal will cause the current SP RAM data to be made available on the RB
 
 Within the ISA, these instructions are grouped together and they operate on a source Register. If an Immediate value needs to be pushed then it must be moved into a Register and then PUSHed to the stack.
 
-The PUSHF and POPF instructions work on the flags register only.
-
-The RSP instruction is used to reset the SP back to 0xFFFF.
-
-The LDSP and STSP will load the actual SP counter value (RAM address) can be manipulated.
+- The PUSHF and POPF instructions work on the flags register only.
+- The RSP instruction is used to reset the SP back to 0xFFFF.
+- The LDSP instruction will load the actual SP counter value (RAM address) into the specified destination Register.
+- The STSP instruction will save the value in the source register into the SP counter.
 
 
 ## Interrupts ##
