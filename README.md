@@ -1,6 +1,8 @@
 # SS16-TTL-CPU
 
-An attempt at building a RISC inspired 16 bit superscalar TTL CPU using 74 series TTL Logic
+An attempt at building a RISC inspired 16 bit superscalar TTL CPU using 74 series TTL Logic.
+
+**Note:** This project is still in draft stage, minimal working hardware and minimal circuit diagrams have been produced yet!
 
 # Introduction
 
