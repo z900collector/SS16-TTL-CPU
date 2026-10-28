@@ -12,7 +12,7 @@ The transfer of register contents to and from the SP takes place over the [RBUS]
 
 ### Reset ###
 
-When a RESET occurs, the SP initializes back to 0x0000. The RSP instruction can also be used to reset the SP back to 0x0000.
+When a RESET occurs, the SP initializes back to 0x0000. The [RSP](/ISA/RSP.md) instruction can also be used to reset the SP back to 0x0000.
 
 ### PUSH ###
 
