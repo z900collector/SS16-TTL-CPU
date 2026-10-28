@@ -18,36 +18,50 @@ When a RESET occurs, the SP initializes back to 0x0000. The RSP instruction can 
 
 When a [PUSH](/ISA/PUSH.md) instruction is executed the basic process needed is:
 
-* The register controller presents the data on the RBUS then
-* The SP Controller:
-** Increments the SP Counter (C1)
-** Sets the B1_DIR to input and enables the B1_OE so the value presents on the internal data bus of the SP.
-** Latch the data via B1 into the SP Latch L1
-** Disabled the B1 buffer
-** Enables the B2 Buffer
-** Asserts RAM_CS, RAM_WE
-** De-asserts RAM_CS and RAM_WE (Writes the data on the railing edge).
+- The register controller presents the data on the RBUS then
+- The SP Controller:
+  - Increments the SP Counter (C1)
+  - Sets the B1_DIR to input and enables the B1_OE so the value presents on the internal data bus of the SP.
+  - Latch the data via B1 into the SP Latch L1
+  - Disabled the B1 buffer
+  - Enables the B2 Buffer
+  - Asserts RAM_CS, RAM_WE
+  - De-asserts RAM_CS and RAM_WE (Writes the data on the railing edge).
 
 
 ### POP ###
 
 The [POP](/ISA/POP.md) instruction will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
 
-* Buffer B1_DIR is set to output
-* RAM_CS is asserted as is RAM_OE
-* B1_OE is enabled.
-* Data is now present on RBUS for the Register Controller to capture.
+- Buffer B1_DIR is set to output.
+- RAM_CS and RAM_OE are asserted.
+- B1_OE is enabled.
+- Data is now present on RBUS for the Register Controller to capture.
+
+## Internal Design ##
+
+### Functional Blocks ###
+
+- B1 - Buffer between RBUS and the internal SP BUS
+- L1 - Latch for internal Bus to Counter (C1)
+- C1 - Counter 12-bit counter
+- B2 - Latch Buffer, buffer between Latch output side and internal Bus.
+- B3 - Address Bus input Buffer to internal Bus (CALL / RET data).
 
 ### Signals ###
 
-* SP_RAM_CS asserted and SP_RBUS Tri-State buffer direction set.
-* Buffer OE asserted, value now appears on RBUS.
-* The destination Register needs to set the RBUS direction buffer to input and assert the OE pin.
-* Latch the data present on the RBUS into the "A" Latch.
-* Tri-state the [RBUS](/Registers/RBUS.md) buffer
-* Assert RBUS_Free signal.
-* SP unit on receiving RBUS_Free, disabled the Buffer OE, drops CS pin to the RAM and increments SP by 1.
-* SP Unit latches counter value into SP latch.
+- B1_DIR - Set B1 to input or output.
+- B1_OE - Output Enable.
+- L1_LATCH - Latches the internal buffer.
+- B2_OE - Enables output from the Buffer (present L1 data back to internal bus).
+- RAM_CS - RAM Chis Select
+- RAM_WR - Enables writing to the RAM
+- RAM_OE - Enables the RAM output buffers (READ Mode)
+- C1_RESET - Reset the Counter back to 0x0000
+- C1_LOAD - Load the L1 output
+- C1_INC - Increment the counter by 1
+- C1_DEC - Decrement the counter by 1
+
 
 ## Relevant Instructions ##
 
