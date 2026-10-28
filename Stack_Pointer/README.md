@@ -16,7 +16,7 @@ When a RESET occurs, the SP initializes back to 0x0000. The RSP instruction can 
 
 ### PUSH ###
 
-When a PUSH instruction is executed the basic process needed is:
+When a [PUSH](/ISA/PUSH.md) instruction is executed the basic process needed is:
 
 * The register controller presents the data on the RBUS then
 * The SP Controller:
@@ -31,7 +31,7 @@ When a PUSH instruction is executed the basic process needed is:
 
 ### POP ###
 
-The POP signal will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
+The [POP](/ISA/POP.md) instruction will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
 
 * Buffer B1_DIR is set to output
 * RAM_CS is asserted as is RAM_OE
@@ -51,15 +51,15 @@ The POP signal will cause the current SP RAM data to be made available on the RB
 
 ## Relevant Instructions ##
 
-* PUSH <Rs>
-* POP <Rd>
-* RSP
+* [PUSH](/ISA/PUSH.md) <Rs>
+* [POP](/ISA/POP.md) <Rd>
+* [RSP](/ISA/RSP.md)
 * [PUSHF](/ISA/PUSHF.md)
 * [POPF](/ISA/POPF.md)
-* CALL
-* RET
-* LDSP <Rd>
-* STSP <Rs>
+* [CALL](/ISA/CALL.md)
+* [RET](/ISA/RET.md)
+* [LDSP](/ISA/LDSP) <Rd>
+* [STSP](/ISA/STSP) <Rs>
 
 Within the ISA, these instructions are grouped together and they operate on a source Register. If an Immediate value needs to be pushed then it must be moved into a Register and then PUSHed to the stack.
 
