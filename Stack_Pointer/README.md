@@ -40,6 +40,8 @@ The [POP](/ISA/POP.md) instruction will cause the current SP RAM data to be made
 
 ## Internal Design ##
 
+![TTL CPU SP 2026-10-28](TTL-CPU-SP-2026-10-28.png)
+
 ### Functional Blocks ###
 
 - B1 - Buffer between RBUS and the internal SP BUS
