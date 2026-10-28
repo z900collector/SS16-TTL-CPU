@@ -14,7 +14,7 @@ Registers R0-R3 will include the ability to perform some simple ALU functions se
 * Shifts / Rotates
 * Zero / Invert / Bitwise OR / AND / XOR operations
 
-Registers 4-7 will basically be latches but are connected to both the DBUS and RBUS. These registers can also hold the current value/result of the following:
+Registers 4-7 will basically be latches but are connected to both the [DBUS](DBUS.md) and [RBUS](RBUS.md). These registers can also hold the current value/result of the following:
 
 - Primary ALU output result.
 - Program Counter Latches.
@@ -45,7 +45,7 @@ Circuit Simulation of R0 register using Logisim (Additional components required 
 
 ![S16-TTL-CPU](Register_R0.png?raw=true)
 
-### Registers R4-R7
+### Registers R4-R7 ###
 
 These registers are basically a scalled down Advanced Register but contain additional logic to latch the value from the alternate Bus into the Register.
 
@@ -59,7 +59,7 @@ The ALU design and operation is documented elsewhere and is still in design stag
 
 <circuit here>
 
-### Register Control - Draft Ideas
+### Register Control - Draft Ideas ###
 
 Each Register has a collection of signals to control the onboard logic, these signals are generated from the Register Controller/Sequencer (RCS) using hard logic rather than using an EPROM design (as used in many TTL CPU projects).
 The Instruction Decoder generates the actual Instruction Signal such as "LD", "LDI", "XFER", "LDM" etc and presents the Source and Destination CPU Values to the register controller. The RCS then generates ENABLE signals for the source/destination registers and the Latch/Output enable signals combined with the T0-T6 signals. When the operation completes, another register based instruction can be loaded and executed if fetched next.
@@ -124,4 +124,4 @@ The diagram below will be updated to reflect the changes from Buffers to Latches
 
 The ISA documentation is here: (https://github.com/z900collector/S16-TTL-CPU/blob/main/ISA/README.MD)
 
-**Updated 2026-09-08**
+**Updated 2026-10-28**
