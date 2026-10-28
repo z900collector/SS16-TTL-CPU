@@ -56,6 +56,7 @@ The [POP](/ISA/POP.md) instruction will cause the current SP RAM data to be made
 - B1_OE - Output Enable.
 - L1_LATCH - Latches the internal buffer.
 - B2_OE - Enables output from the Buffer (present L1 data back to internal bus).
+- B3_OE - Enables output from the B3 buffer (present address bus to internal bus).
 - RAM_CS - RAM Chis Select
 - RAM_WR - Enables writing to the RAM
 - RAM_OE - Enables the RAM output buffers (READ Mode)
