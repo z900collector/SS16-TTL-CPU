@@ -1,45 +1,52 @@
-# Overview #
+# Stack Pointer Overview #
 
-**DRAFT** - 2026-10-23
+**DRAFT** - 2026-10-28
 
 This project uses a 16-Bit stack but unlike other projects, the stack is not part of normal user RAM, instead it is implemented as a separate "Functional Unit".
 
 One of the advantages of this is a register value can be PUSHed or POPed to/from the SP relatively independant of other operations and in effect parts of the operation can be done in parallel with other tasks.
 
-The transfer of register contents to and from the SP takes place over the RBUS. 
+The transfer of register contents to and from the SP takes place over the [RBUS](/Registers/RBUS.md). 
 
 ## Theory of operation ##
 
 ### Reset ###
 
-When a RESET occurs, the SP initializes back to 0xFFFF. The RSP instruction can also be used to reset the SP back to 0xFFFF. 
+When a RESET occurs, the SP initializes back to 0x0000. The RSP instruction can also be used to reset the SP back to 0x0000.
 
 ### PUSH ###
 
-A PUSH operation requires the Register value to be presented on the RBUS, a signal is raised to latch the bus into the SP unit and a push signal asserted.
+When a PUSH instruction is executed the basic process needed is:
 
-#### States ####
+* The register controller presents the data on the RBUS then
+* The SP Controller:
+** Increments the SP Counter (C1)
+** Sets the B1_DIR to input and enables the B1_OE so the value presents on the internal data bus of the SP.
+** Latch the data via B1 into the SP Latch L1
+** Disabled the B1 buffer
+** Enables the B2 Buffer
+** Asserts RAM_CS, RAM_WE
+** De-asserts RAM_CS and RAM_WE (Writes the data on the railing edge).
 
-* T0 - The SP will increment the SP counter.
-* T1 - Assert RAM_CS.
-* T1 - Assert RBUS_DIR.
-* T1 - Assert RBUS_OE.
-* T2 - Assert RAM_WR.
-* T3 - De-assert RAM_WR, RAM_CS, RBUS_OE.
 
 ### POP ###
 
 The POP signal will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
 
-#### States ####
+* Buffer B1_DIR is set to output
+* RAM_CS is asserted as is RAM_OE
+* B1_OE is enabled.
+* Data is now present on RBUS for the Register Controller to capture.
 
-* SP RAM CS asserted and SP RBUS Tri-State buffer direction set.
+### Signals ###
+
+* SP_RAM_CS asserted and SP_RBUS Tri-State buffer direction set.
 * Buffer OE asserted, value now appears on RBUS.
 * The destination Register needs to set the RBUS direction buffer to input and assert the OE pin.
-* Latch the RBUS value into the "A" Latch.
-* Tri-state the RBUS buffer
-* Assert RBUS free signal.
-* SP unit on receiving RBUS Free, disabled the Buffer OE, drops CS pin to the RAM and increments SP by 1.
+* Latch the data present on the RBUS into the "A" Latch.
+* Tri-state the [RBUS](/Registers/RBUS.md) buffer
+* Assert RBUS_Free signal.
+* SP unit on receiving RBUS_Free, disabled the Buffer OE, drops CS pin to the RAM and increments SP by 1.
 * SP Unit latches counter value into SP latch.
 
 ## Relevant Instructions ##
@@ -47,8 +54,10 @@ The POP signal will cause the current SP RAM data to be made available on the RB
 * PUSH <Rs>
 * POP <Rd>
 * RSP
-* PUSHF
-* POPF
+* [PUSHF](/ISA/PUSHF.md)
+* [POPF](/ISA/POPF.md)
+* CALL
+* RET
 * LDSP <Rd>
 * STSP <Rs>
 
@@ -58,7 +67,8 @@ Within the ISA, these instructions are grouped together and they operate on a so
 - The RSP instruction is used to reset the SP back to 0xFFFF.
 - The LDSP instruction will load the actual SP counter value (RAM address) into the specified destination Register.
 - The STSP instruction will save the value in the source register into the SP counter.
-
+- The CALL instruction will save the PC value into the SP RAM
+- The RET instruction will return the top stack value, presenting it to the B4 latch.
 
 ## Interrupts ##
 
@@ -72,3 +82,5 @@ If an interrupt is generated and executes, the current PC value is automatically
 ## Instruction Decoding ##
 
 < todo >
+
+Updated: 2026-10-28
