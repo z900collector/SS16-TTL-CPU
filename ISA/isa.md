@@ -2,6 +2,72 @@
 
 Draft As of 2026-11-23
 
+## Miscelaneous Instructions
+
+### NOP
+
+The NOP instruction is a no operation instruction that advances the program counter by 1 and nothing else. It is typically used to delay or fill in time by using clock cycles without altering any state within the CPU.
+ 
+The NOP instruction takes no arguments.
+
+The format of the instruction is:
+
+*NOP*
+
+### INT
+
+The INT instruction is used to jump into the interupt table at location 0x0038 which is identical to the Z80 Mode 1 interrupt.
+
+Provision is being made to specify the address offset similar to the 8080/8085 processor.
+
+The INT instruction takes 1 argument (but it is ignored at this stage).
+
+*INT x*
+
+
+### EI
+
+The EI instruction is used to Enable all maskable Interrupts. 
+
+The EI instruction takes no arguments.
+
+The format of the instruction is:
+
+*EI*
+
+
+### DI
+
+The DI instruction is used to Disable all maskable Interrupts. 
+
+The DI instruction takes no arguments.
+
+The format of the instruction is:
+
+*DI*
+
+
+### IN
+
+The IN instruction is used to input an 8-bit value from an I/O sub-system. It requires an 8-bit port to read from and a destination Register to write the value to.  The upper 8 bits are zero'd on write.
+
+The iregister is specified in the upper 8 bits of the instruction and the port is specified in the lower 8-bits of the instruction.
+
+The IN instruction takes two arguments.
+
+*IN <Port>,<Rd>*
+
+
+### OUT
+
+The OUT instruction is used to output an 8-bit value to the I/O sub-system. It requires an 8-bit port to write to and a value to write. 
+The 8-bit value is obtained from the low byte of the specified source register. The port is specified in the lower 8-bits of the instruction.
+
+The OUT instruction takes two arguments.
+
+The format of the instruction is:
+
+*OUT <Rs>, <Port>*
 
 ## Stack Instructions
 
@@ -92,22 +158,9 @@ The instruction has no arguments.
 The format of the instruction is:
 
 *RETI*
-NOP
-INT x
-EI
-DI
-
-IN <Port>
-OUT <Port>
-
-PUSH
-POP
-PUSHF
-POPF
 
 LDSP <Rd>
 STSP <Rs>
-RSP
 
 ST
 XFER
