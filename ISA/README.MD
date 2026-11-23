@@ -27,7 +27,7 @@ Where:
  "DDD" is a Destination Register.
  "-" Not defined (zero)
 
-##Instruction Mapping##
+## Instruction Mapping
 ![/ISA](2026-10-20-ISA-144645.png?raw=true)
 
 Note: If there are 16 registers then the format for Rs & Rd is SSSS DDDD
@@ -37,16 +37,18 @@ Note: If there are 16 registers then the format for Rs & Rd is SSSS DDDD
 
 ### Type Bits 
 
-The "T" bits are designated as follows:
+The "type Bits" denoted throughout this project as "T" bits are designated as follows:
 ```
 00------ Misc Instructions and Primary ALU Operations.
 01------ Register Moves involving memory/Immediate values.
 10------ Transfer Register and Register specific ALU Operations.
 11------ Jump/Call Instructions + (HALT -> all F's).
+
+
+
 ```
 STATUS: Very Incomplete! As I build each functional unit I am adding and updating this page.
 
-Refer to InsetSet.h for a full list of currently defined instructions (but not necessarily completed instruction classes).
 
 ## Registers
 
@@ -73,11 +75,11 @@ FEDC BA98
 --II IIII Instruction
 ```
 
-The "Type" bits also form the instruction but are used to break the ISA into four groups that is directly tied to decoding logic.
+The "Type" bits also form the instruction but are used to break the ISA into four groups that is directly tied to decoding logic. 
 
-Each instruction group share similar CPU functionality, this is done to make the decoding easier and faster as well as provide additonal information to a common group of instructions. 
+Each instruction group share similar CPU functionality, this is done to make the decoding easier and faster as well as provide additonal information to a common group of instructions.
 
-For example, Type 0 instructions do not reference the PC value, while Type 3 instructions do, so the decoding logic for IN,OUT,DI,EI is much simpler that a JZN instruction.
+For example, Type 0 instructions do not reference the PC value, while Type 3 instructions do, so the decoding logic for IN,OUT,DI,EI is much simpler that a JZN instruction. Since type 0 instructions do not effect the flags they can execute quickly while other instructions are being decoded and will not influence them.
 
 Using four separate Instuction decoding queues should allow different methods of instruction decoding, such as decoding on a functional unit rather than centralising the control signal generation and using lots of decoding EPROMs
 
