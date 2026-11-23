@@ -12,11 +12,11 @@ The transfer of register contents to and from the SP takes place over the [RBUS]
 
 ### Reset ###
 
-When a RESET occurs, the SP initializes back to 0x0000. The [RSP](/ISA/RSP.md) instruction can also be used to reset the SP back to 0x0000.
+When a RESET occurs, the SP initializes back to 0x0000. The [RSP](/ISA/isa.md#RSP) instruction can also be used to reset the SP back to 0x0000.
 
 ### PUSH ###
 
-When a [PUSH](/ISA/PUSH.md) instruction is executed the basic process needed is:
+When a [PUSH](/ISA/isa.md#PUSH) instruction is executed the basic process needed is:
 
 - The register controller presents the data on the RBUS then
 - The SP Controller:
@@ -31,7 +31,7 @@ When a [PUSH](/ISA/PUSH.md) instruction is executed the basic process needed is:
 
 ### POP ###
 
-The [POP](/ISA/POP.md) instruction will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
+The [POP](/ISA/isa.md#POP) instruction will cause the current SP RAM data to be made available on the RBUS so it can be latched back into the required register (including the PC register).
 
 - Buffer B1_DIR is set to output.
 - RAM_CS and RAM_OE are asserted.
@@ -68,15 +68,15 @@ The [POP](/ISA/POP.md) instruction will cause the current SP RAM data to be made
 
 ## Relevant Instructions ##
 
-* [PUSH](/ISA/PUSH.md) <Rs>
-* [POP](/ISA/POP.md) <Rd>
-* [RSP](/ISA/RSP.md)
-* [PUSHF](/ISA/PUSHF.md)
-* [POPF](/ISA/POPF.md)
-* [CALL](/ISA/CALL.md)
-* [RET](/ISA/RET.md)
-* [LDSP](/ISA/LDSP) <Rd>
-* [STSP](/ISA/STSP) <Rs>
+* [PUSH](/ISA/isa.md#PUSH) <Rs>
+* [POP](/ISA/isa.md#POP) <Rd>
+* [RSP](/ISA/isa.md#RSP)
+* [PUSHF](/ISA/isa.md#PUSHF)
+* [POPF](/ISA/isa.md#POPF)
+* [CALL](/ISA/isa.md#CALL)
+* [RET](/ISA/isa.md#RET)
+* [LDSP](/ISA/isa.md#LDSP) <Rd>
+* [STSP](/ISA/isa.md#STSP) <Rs>
 
 Within the ISA, these instructions are grouped together and they operate on a source Register. If an Immediate value needs to be pushed then it must be moved into a Register and then PUSHed to the stack.
 
@@ -100,4 +100,4 @@ If an interrupt is generated and executes, the current PC value is automatically
 
 < todo >
 
-Updated: 2026-10-28
+Updated: 2026-11-23
