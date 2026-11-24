@@ -28,11 +28,11 @@ Where:
  "-" Not defined (zero)
 
 ## Instruction Mapping
-![/ISA](2026-10-20-ISA-144645.png?raw=true)
+![/ISA](2026-11-24-ISA-151606.png?raw=true)
 
 Note: If there are 16 registers then the format for Rs & Rd is SSSS DDDD
 
-[Current ISA spreadsheet](/ISA/ISA-2026-10-20.xls) 
+[Current ISA spreadsheet](/ISA/ISA-2026-11-23.xls) 
 
 
 ### Type Bits 
@@ -195,5 +195,9 @@ Type 3 Instructions are primarily for Jumps/Calls/Returns (+ HALT) 0xC0-0xFF
 	HALT              ; Turn off system clock (Basically stop with PC set to location of HALT
 ```
 
-**Updated 2026-10-20**
+## Instruction Mapping Table
+
+![/ISA Table](2026-11-24-ISA-Table-151753.png?raw=true)
+
+**Updated 2026-11-24**
 
