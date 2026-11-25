@@ -1,5 +1,7 @@
 # Registers
 
+[TOC]
+
 ## overview
 
 Influenced by a range of CPU designs, I have settled on the following specifications for the Registers.
