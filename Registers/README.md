@@ -1,11 +1,10 @@
 # Registers
 
-
-## Overview 
+## overview
 
 Influenced by a range of CPU designs, I have settled on the following specifications for the Registers.
 
-The design will have eight (8) registers, identified as R0 to R7 all are 16 bits wide.
+The design will have eight (8) registers, identified as R0 to R7, all are 16 bits wide.
 
 Registers R0-R3 will include the ability to perform some simple ALU functions separate to the main ALU:
 
@@ -23,21 +22,19 @@ Registers 4-7 will basically be latches but are connected to both the [DBUS](DBU
 
 Having eight registers means having 3 bits for a source and 3 bits for a destination register in the ISA format. Provision has been made to go to 4 bits allowing 16 registers in a more advanced design.
 
+## Register Usage
+
 ### Registers R0-R3 
 
-Registers R0 to R3 are known as "Advanced Registers" as they do more than just hold a value. In order to implement basic bitwise operations in the first four registers, a second operand in required, this is provided by having an additional latch.
+Registers R0 to R3 are known as "Advanced Registers" as they contain two registers in one and an ALU for bitwise operations. The two registers are known as Latch "A" and Latch "B". The "A" Latch is written to using standard [MOVE](/ISA/isa.md#MOVE) / [LD](/ISA/isa.md#LD) / [ST](/ISA/isa.md#ST) instructions. The "B" Latch is set using the [XFER](/ISA/isa.nd#XFER) and [TRAN](/ISA/isa.md#TRAN) instructions.
 
-This latch is identified as the "B" Latch and can be set using the "XFER" and "TRAN" instructions. At this stage "TRAN" is not in the ISA but will be added shortly.
+See the ISA for more details, but basically the format for "XFER" and "TRAN" is:
 
-See the ISA for more details, but basically the format for "XFER" is:
+ **XFER Rs,Rd** - where "Rs" is Latch "A" in the "Source" register and "Rd" is the "B" Latch in the "Destination" register.
 
- **XFER Rs,Rd** - where "Rs" is the "Source" register and "Rd" is the "Destination" register.
+Note: You cannot read back the value of the "B" Latch.
 
-This instruction allows the "A" Latch value of any other register to be loaded into the destination Register's "B" Latch so "bitwise" logic operations can be performed. You cannot read back the value of the "B" Latch.
-
- **TRAN R** - This is a new instruction I thought up and is yet to be documented and tested. 
-
-The TRAN instruction tansfers the value in the "A" Latch into the "B" Latch within the same register. I used the simulation tool "Logisim Evolution" to verify this capability and the circuit fully supports this so I just need to add it into the ISA and work up the control signals.
+ **TRAN R** - The TRAN instruction tansfers the value in the "A" Latch into the "B" Latch within the same register. I used the simulation tool "Logisim Evolution" to verify this capability and the circuit fully supports this so I just need to add it into the ISA and work up the control signals.
 
 **Note: If "Rd" is specified as R4 to R7 then no operation is performed as these Registers do not have a "B" Latch.**
 
@@ -47,25 +44,33 @@ Circuit Simulation of R0 register using Logisim (Additional components required 
 
 ### Registers R4-R7
 
-These registers are basically a scalled down Advanced Register but contain additional logic to latch the value from the alternate Bus into the Register.
+These registers are basically a scalled down Advanced Register but contain additional logic to latch the value from an alternate Bus into the Register.
 
-The instructions LDSP and LDPC are for reading and latching the SP and PC counters directly (not using the D or R Buses).
+#### Register R4
 
-### ALU Results Register R0
+No special function at this stage.
 
-For arithmetic ALU operations like ADD, SUB, DIV and MUL, I can dedicate a register as the ALU results register (at this stage it's R0) and use the D-Bus and R-Bus as inputs to the Arithmetic ALU like other designs.
+#### Register R5
+
+No special function at this stage.
+
+#### Register R6
+
+The instruction [LDPC](/ISA/isa.md#LDPC) reads th Program Counter value and latches it into register R6. This does not involve data fllowing over the DBUS or RBUS buses).
+
+#### Register R7
+
+The result of operations using the primary ALU are stored in the R7 register. These operations are ADD, SUB, DIV and MUL, I can dedicate a register as the ALU results register (at this stage it's R0) and use the D-Bus and R-Bus as inputs to the Arithmetic ALU like other designs.
 
 The ALU design and operation is documented elsewhere and is still in design stage but it should support the ADD, SUB, DIV and MUL instructions and a range of Bitwise logic.
 
-<circuit here>
 
-### Register Control - Draft Ideas ###
+## Register Control - Draft Ideas ##
 
 Each Register has a collection of signals to control the onboard logic, these signals are generated from the Register Controller/Sequencer (RCS) using hard logic rather than using an EPROM design (as used in many TTL CPU projects).
 The Instruction Decoder generates the actual Instruction Signal such as "LD", "LDI", "XFER", "LDM" etc and presents the Source and Destination CPU Values to the register controller. The RCS then generates ENABLE signals for the source/destination registers and the Latch/Output enable signals combined with the T0-T6 signals. When the operation completes, another register based instruction can be loaded and executed if fetched next.
 
 This simplifies the IR decode, execute logic and allows the Instruction fetch cycle to re-occur directly after the RCS takes over (it would do it's task(s) during the fetch, decode cycle), then be ready at the Execute cycle for the next register operation if there was one directly after the current one. Theoretically, a non-register instruction could be fetched and processed a few cycles after this sequence has started.
-
 
 The first four Registers (R0-R3) will also include an Increment/Decrement capability to increase the speed of loop counting and Rotate/Shift Operations. Since logic gates are relatively cheap, adding bitwise logical operations such as AND, OR, XOR etc will also enhance each register.
 
