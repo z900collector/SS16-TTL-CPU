@@ -1,7 +1,7 @@
 # Registers
 
 
-## Overview ##
+## Overview 
 
 Influenced by a range of CPU designs, I have settled on the following specifications for the Registers.
 
@@ -23,7 +23,7 @@ Registers 4-7 will basically be latches but are connected to both the [DBUS](DBU
 
 Having eight registers means having 3 bits for a source and 3 bits for a destination register in the ISA format. Provision has been made to go to 4 bits allowing 16 registers in a more advanced design.
 
-### Registers R0-R3 ###
+### Registers R0-R3 
 
 Registers R0 to R3 are known as "Advanced Registers" as they do more than just hold a value. In order to implement basic bitwise operations in the first four registers, a second operand in required, this is provided by having an additional latch.
 
@@ -45,7 +45,7 @@ Circuit Simulation of R0 register using Logisim (Additional components required 
 
 ![S16-TTL-CPU](Register_R0.png?raw=true)
 
-### Registers R4-R7 ###
+### Registers R4-R7
 
 These registers are basically a scalled down Advanced Register but contain additional logic to latch the value from the alternate Bus into the Register.
 
@@ -122,6 +122,6 @@ The diagram below will be updated to reflect the changes from Buffers to Latches
 
 ## Supporting Information
 
-The ISA documentation is here: (https://github.com/z900collector/S16-TTL-CPU/blob/main/ISA/README.MD)
+The ISA documentation is here: [ISA](ISA/README.md)
 
-**Updated 2026-10-28**
+**Updated 2026-11-25**
