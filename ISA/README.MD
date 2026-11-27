@@ -1,5 +1,7 @@
 # SS-16 Instruction Set Architecture #
 
+STATUS: Incomplete! As I build each functional unit I am adding and updating this page.
+
 # Overview
 
 Currently I am building a 16 bit version of the TTL based CPU, so the instruction word is fixed at 16 bits. This has been influenced by various RISC CPU designs. Eventually I will move to a 32-Bit design once I have actually built a working system.
@@ -39,26 +41,24 @@ Note: If there are 16 registers then the format for Rs & Rd is SSSS DDDD
 
 The "type Bits" denoted throughout this project as "T" bits are designated as follows:
 ```
-00------ Misc Instructions and Primary ALU Operations.
-01------ Register Moves involving memory/Immediate values.
+00------ I/O, Interrupt and Misc Instructions.
+01------ Register Moves involving memory/Immediate values and ALU.
 10------ Transfer Register and Register specific ALU Operations.
 11------ Jump/Call Instructions + (HALT -> all F's).
-
-
-
 ```
-STATUS: Very Incomplete! As I build each functional unit I am adding and updating this page.
 
 
 ## Registers
 
-The SS-16's current design has 8 registers called R0 to R7. This allow for a 3-bit addressing scheme within an instruction.
-Source and Destination registers that are 3 bits each (giving 8 registers) R0-R7 but can be expanded to 16 registers very easily.
+The current design has 8 [registers](/Registers/README.md) called R0 to R7.
+
+Having 8 registers allows for a 3-bit addressing scheme within an instruction. When specifiying both Source and Destination registers that are 3 bits each, only 6 bits are needed within the lower byte of the instruction.
+This leaves 2 bits for future use, such as expanding to 16 registers.
 
 - R0-R3 are specialized registers with extended ALU capability (INC/DEC/SHL/ROL etc).
 - R7 is slated as the results register for ALU maths operations.
 - R6 can be loaded with the Program Counter (PC) value using the LDPC instruction.
-- R5 can be loaded with the Stack Point (SP) value using the LDSPinstruction.
+- R5 can be loaded with the Stack Point (SP) value using the LDSP instruction (this is still being decided).
 
 ## Instruction mnemonic bit encoding
 
@@ -75,7 +75,7 @@ FEDC BA98
 --II IIII Instruction
 ```
 
-The "Type" bits also form the instruction but are used to break the ISA into four groups that is directly tied to decoding logic. 
+The "Type" bits also form the instruction but are used to break the ISA into four groups that is directly tied to decoding logic. The decoding logic is split between 4 instruction pipelines. 
 
 Each instruction group share similar CPU functionality, this is done to make the decoding easier and faster as well as provide additonal information to a common group of instructions.
 
@@ -83,10 +83,9 @@ For example, Type 0 instructions do not reference the PC value, while Type 3 ins
 
 Using four separate Instuction decoding queues should allow different methods of instruction decoding, such as decoding on a functional unit rather than centralising the control signal generation and using lots of decoding EPROMs
 
-
-
 **This is still in design phase so this can/will change over time.**
 
+Notes: SP always points to the last value written. I.e PUSH or return address.
 
 ### Type 0 Instructions
 
@@ -94,14 +93,17 @@ The type 0 instructions have a range of 0x00-0x3F
 ```
 	NOP                ; No Operation Instruction
 	INT <I>            ; Jump to Interupt Routine I (0x00 to 0xFF)
-	IN <p>,Rd          ; Input from Port <p> where p=0x00 to 0xFF (Lower 8 bits of Instruction).
-	OUT <p>,Rs         ; Output to Port <p> from Rs
 	EI                 ; Enable Interupts - Making Instruction available but no interupts in design yet
 	DI                 ; Disable Interupts
+
+	IN <p>,Rd          ; Input from Port <p> where p=0x00 to 0xFF (Lower 8 bits of Instruction).
+	OUT <p>,Rs         ; Output to Port <p> from Rs
+
 	PUSH <Rs>          ; Dec SP and then PUSH the Register Rn onto the stack
 	POP <Rd>           ; POP stack into Register Rn and Inc SP.
 	PUSHF              ; Dec SP and then PUSH the Flags Register onto the stack
 	POPF               ; POP stack into Flags Register and Inc SP.
+
 	LDSP Rd            ; Load SP into Rd
 	STSP Rs            ; Load SP from Rs
 	RSP                ; Reset Stack Pointer
@@ -117,10 +119,11 @@ Type 1 Instructions have a range of 0x40-0x7F
 	MOV (M), Rd        ; Load Rd with value from Code Space
 	LD  Rd,Rs          ; Load Rd with the value from Rs
 	LD  Rd,0x52        ; Load Rd with the Immediate (8 bits)value stored in the instruction (single fetch)
+	LDM Rd,(M)         ; Load Rd with the value stored in memeory location M
 	LDI Rd,#1234       ; Load Rd with the 16bit word 0x1234 stored in PC+1
 	LDI Rd,0x52        ; Load Rd with the Immediate (8 bits)value stored in the instruction (single fetch)
-	LDM Rd,(M)         ; Load Rd with the value stored in imemeory location M
 	LDFL Rd            ; Load Flag register into Rd
+
 	CCF                ; Clear Carry Flag
 	CZF                ; Clear Zero Flag
 	SCF                ; Set Carry Flag
@@ -141,7 +144,6 @@ Type 1 Instructions have a range of 0x40-0x7F
 
 Type 2 Instructions are for Register operations and have a range of 0x80-0xBF
 
-Notes: SP always points to the last value written. I.e PUSH or return address.
 ```
 	NOT Rn             ; bitwise NOT Register Latch A with Latch B set/clear "Z" Flag 
 	XOR Rn             ; bitwise XOR Register Latch A with Latch B set/clear "Z" Flag 
@@ -172,12 +174,14 @@ Notes: SP always points to the last value written. I.e PUSH or return address.
 
 Type 3 Instructions are primarily for Jumps/Calls/Returns (+ HALT) 0xC0-0xFF
 
+Branches only have an 8 bit displacement while jumps provide a 16 bit address to jump to in the word following the instruction.
+
 ```
 	JZ  label         ; Jump if Z Flag is set (Z=1)
 	JNZ label         ; Jump if Z Flag is clear (Z=0)
 	JC  label         ; Jump if Carry is set (C=1)
 	JNC label         ; Jump if Carry is NOT set (C=0)
-	JEQ Rs,Rd,M       ; jump if Rs = Rd to M
+	JNE Rs,Rd,M       ; jump if Rs = Rd to M
 	JMP M             ; Jump to location M in ROM
 	BRZ <d>           ; Branch using the 8-bit displacement
 	BNZ <d>           ; Branch if not Zero using the 8-bit displacement
@@ -189,6 +193,7 @@ Type 3 Instructions are primarily for Jumps/Calls/Returns (+ HALT) 0xC0-0xFF
 	STPC              ; Store Rs to the Stack Pointer
 
 	CALL label        ; Call code at location defined by "label", SP=SP+1, return address pushed to SP
+	CALL (Rs)         ; Call code at location held in Register Rs
 	RET               ; Return to location on SP and SP=SP-1
 	RETI              ; Return from Interrupt
 
