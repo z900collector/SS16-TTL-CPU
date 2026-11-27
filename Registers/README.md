@@ -97,7 +97,7 @@ The first four registers have a secondary register latch ("B" Latch) to enable t
 
 The register design has been evolving over time with changes from Buffers to Latches and control signal naming becomeing standardised. The diagram below has been updated as of November 25 2026 to reflect the changes.
 
-![S16-TTL-CPU](media/Registor-0.png?raw=true)
+![S16-TTL-CPU](media/Register-0.png?raw=true)
 
 Still to do:
 
