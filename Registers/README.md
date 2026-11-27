@@ -93,13 +93,17 @@ The flags from local ALU operations need to be propergated to a global flags reg
 The first four registers have a secondary register latch ("B" Latch) to enable the basic ALU operations to be performed locally, the 2nd latch is loaded by an XFER instruction (XFER Rs, Rd) This would be different to a "LD" instruction which moves data into the "A" Latch of a Register. The XFER would load "A" and "B" at the same time. A logic operation would then be an XFER, followed by an LD, followed by the ALU operation. Results get written back to the "A" latch or if coded, transferred to another register using the R-BUS. The key points are the XFER is in progress as the LD is being fetched and decoded, then at the end of the LD, the ALU operation could execute. As it is occurring, another Instruction fetch is already in progress.
 
 
-## Reference Drawing
+## Reference Drawing - Register 0
 
-The current design from September 2025 is still current with some changes from Buffers to Latches. While the initial circuit simulation looks good, I still need to drop this onto a bread board and complete the register control logic.
+The register design has been evolving over time with changes from Buffers to Latches and control signal naming becomeing standardised. The diagram below has been updated as of November 25 2026 to reflect the changes.
 
-The diagram below will be updated to reflect the changes from Buffers to Latches.
+![S16-TTL-CPU](media/Registor-0.png?raw=true)
 
-![S16-TTL-CPU](/REG-Signals-2025-09-09.jpg?raw=true)
+Still to do:
+
+- Bread board R0.
+- Complete the register control logic module (both logisim and Kicad designs).
+
 
 ## Terminology
 
