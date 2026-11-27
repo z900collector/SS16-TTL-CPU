@@ -22,7 +22,7 @@ Registers R4-R7 are basically latches that are connected to both the [DBUS](DBUS
 
 Having eight registers means having 3 bits for a source and 3 bits for a destination register in the ISA format. Provision has been made to go to 4 bits allowing 16 registers in a more advanced design.
 
- All registers are connected to both the [DBUS](DBUS.md) and [RBUS](RBUS.md).
+All registers are connected to both the [DBUS](DBUS.md) and [RBUS](RBUS.md).
 
 ## Register Usage
 
@@ -36,11 +36,11 @@ See the ISA for more details, but basically the format for "XFER" and "TRAN" is:
 
 Note: You cannot read back the value of the "B" Latch.
 
- **TRAN R** - The TRAN instruction tansfers the value in the "A" Latch into the "B" Latch within the same register. I used the simulation tool "Logisim Evolution" to verify this capability and the circuit fully supports this so I just need to add it into the ISA and work up the control signals.
+ **TRAN Rs** - The TRAN instruction tansfers the value in the "A" Latch into the "B" Latch within the same register. I used the simulation tool "Logisim Evolution" to verify this capability and the circuit fully supports this functionality.
 
 **Note: If "Rd" is specified as R4 to R7 then no operation is performed as these Registers do not have a "B" Latch.**
 
-Circuit Simulation of R0 register using Logisim (Additional components required still).
+Partial Circuit Simulation of R0 register using Logisim (Additional components required still).
 
 ![S16-TTL-CPU](Register_R0.png?raw=true)
 
@@ -58,11 +58,11 @@ No special function at this stage.
 
 #### Register R6
 
-The instruction [LDPC](/ISA/isa.md#LDPC) reads th Program Counter value and latches it into register R6. This does not involve data fllowing over the DBUS or RBUS buses).
+The instruction [LDPC](/ISA/isa.md#LDPC) reads th Program Counter value and latches it into register R6. This does not involve data flowing via the DBUS or RBUS buses).
 
 #### Register R7
 
-The result of operations using the primary ALU are stored in the R7 register. These operations are ADD, SUB, DIV and MUL, I can dedicate a register as the ALU results register (at this stage it's R0) and use the D-Bus and R-Bus as inputs to the Arithmetic ALU like other designs.
+The result of operations using the primary ALU are stored in the R7 register. These operations are ADD, SUB, DIV and MUL, I can dedicate a register as the ALU results register (at this stage it's R0) and use the DBUS and RBUS as inputs to the Arithmetic ALU like other designs.
 
 The ALU design and operation is documented elsewhere and is still in design stage but it should support the ADD, SUB, DIV and MUL instructions and a range of Bitwise logic.
 
@@ -85,23 +85,18 @@ Using Logsim has shown the timing is working as expected.
 
 #### ALU Flags
 
-The flags from local ALU operations need to be propergated to a global flags register which is where the Instruction Registers would look if needed. Flags are latched at the ID stage.
-
-
-#### Secondary Register Latch
-
-The first four registers have a secondary register latch ("B" Latch) to enable the basic ALU operations to be performed locally, the 2nd latch is loaded by an XFER instruction (XFER Rs, Rd) This would be different to a "LD" instruction which moves data into the "A" Latch of a Register. The XFER would load "A" and "B" at the same time. A logic operation would then be an XFER, followed by an LD, followed by the ALU operation. Results get written back to the "A" latch or if coded, transferred to another register using the R-BUS. The key points are the XFER is in progress as the LD is being fetched and decoded, then at the end of the LD, the ALU operation could execute. As it is occurring, another Instruction fetch is already in progress.
+The flags from local ALU operations need to be propergated to a global flags register which is where the Instruction Registers would look if needed. Flags are latched at the Instruction Decode stage on many operations.
 
 
 ## Reference Drawing - Register 0
 
-The register design has been evolving over time with changes from Buffers to Latches and control signal naming becomeing standardised. The diagram below has been updated as of November 25 2026 to reflect the changes.
+The register design has been evolving over time with changes from Buffers to Latches and control signal naming bebeing standardised. The diagram below has been updated as of November 25 2026 to reflect the changes.
 
 ![S16-TTL-CPU](media/Register-0.png?raw=true)
 
 Still to do:
 
-- Bread board R0.
+- Bread board R0 and validate the physical hardware.
 - Complete the register control logic module (both logisim and Kicad designs).
 
 
@@ -120,6 +115,6 @@ Still to do:
 
 ## Supporting Information
 
-The ISA documentation is here: [ISA](/ISA/README.md)
+The ISA documentation is here: [ISA](/ISA/README.MD)
 
-**Updated 2026-11-25**
+**Updated 2026-11-27**
